@@ -362,6 +362,7 @@ class Module extends AbstractModule
             'Omeka\Controller\Admin\ItemSet',
             'Omeka\Controller\Admin\Item',
             'Omeka\Controller\Admin\Media',
+            'Omeka\Controller\Admin\Query',
         ];
         foreach ($controllers as $controller) {
             // Add the show groups to the browse admin pages (details).
