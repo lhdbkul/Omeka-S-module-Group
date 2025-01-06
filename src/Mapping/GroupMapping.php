@@ -4,7 +4,6 @@ namespace Group\Mapping;
 
 use CSVImport\Mapping\AbstractMapping;
 use Laminas\View\Renderer\PhpRenderer;
-use Omeka\Stdlib\Message;
 
 class GroupMapping extends AbstractMapping
 {
@@ -92,7 +91,10 @@ class GroupMapping extends AbstractMapping
         $response = $this->api->search('groups', [$isId ? 'id' : 'name' => $identifier]);
         $result = $response->getContent();
         if (empty($result)) {
-            $this->logger->err(new Message('"%s" is not a valid group.', $identifier)); // @translate
+            $this->logger->err(
+                '"{identifier}" is not a valid group.',  // @translate
+                ['identifier' => $identifier]
+            );
             $this->setHasErr(true);
             return false;
         }

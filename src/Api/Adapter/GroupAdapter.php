@@ -2,6 +2,7 @@
 
 namespace Group\Api\Adapter;
 
+use Common\Stdlib\PsrMessage;
 use Doctrine\ORM\QueryBuilder;
 use Group\Api\Representation\GroupRepresentation;
 use Group\Entity\Group;
@@ -16,7 +17,6 @@ use Omeka\Entity\Media;
 use Omeka\Entity\Resource;
 use Omeka\Entity\User;
 use Omeka\Stdlib\ErrorStore;
-use Omeka\Stdlib\Message;
 
 class GroupAdapter extends AbstractEntityAdapter
 {
@@ -235,9 +235,9 @@ class GroupAdapter extends AbstractEntityAdapter
         $name = $entity->getName();
         $this->validateName($name, $errorStore);
         if (!$this->isUnique($entity, ['name' => $name])) {
-            $errorStore->addError('o:name', new Message(
-                'The name "%s" is already taken.', // @translate
-                $name
+            $errorStore->addError('o:name', new PsrMessage(
+                'The name "{group_name}" is already taken.', // @translate
+                ['group_name' => $name]
             ));
         }
     }
@@ -257,9 +257,9 @@ class GroupAdapter extends AbstractEntityAdapter
             $name = $sanitized;
             $sanitized = $this->sanitizeString($sanitized);
             if ($name !== $sanitized) {
-                $errorStore->addError('o:name', new Message(
-                    'The name "%s" contains forbidden characters.', // @translate
-                    $name
+                $errorStore->addError('o:name', new PsrMessage(
+                    'The name "{group_name}" contains forbidden characters.', // @translate
+                    ['group_name' => $name]
                 ));
                 $result = false;
             }

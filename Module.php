@@ -1057,42 +1057,36 @@ class Module extends AbstractModule
     {
         $services = $this->getServiceLocator();
         $config = $services->get('Config');
-        $translator = $services->get('MvcTranslator');
         $messenger = $services->get('ControllerPluginManager')->get('messenger');
 
-        $message = new \Omeka\Stdlib\Message(
-            $translator->translate('The settings should be set in the file "config/local.config.php" of Omeka. See the file module.config.php of the module and readme.') // @translate
+        $message = new PsrMessage(
+            'The settings should be set in the file "config/local.config.php" of Omeka. See the file module.config.php of the module and readme.' // @translate
         );
         $messenger->addWarning($message);
 
         $recursiveItemSets = !empty($config['group']['config']['group_recursive_item_sets']);
-        $message = new \Omeka\Stdlib\Message(
-            $translator->translate('Recursive item sets: %s'), // @translate
-            $recursiveItemSets
-                ? $translator->translate('yes') // @translate
-               : $translator->translate('no') // @translate
-        );
+
+        $message = $recursiveItemSets
+            ? new PsrMessage('Recursive item sets: yes') // @translate
+            : new PsrMessage('Recursive item sets: no'); // @translate
         $messenger->addSuccess($message);
 
         if ($recursiveItemSets) {
-            $message = new \Omeka\Stdlib\Message(
-                $translator->translate('The groups for resources can be set only by item sets.') // @translate
+            $message = new PsrMessage(
+                'The groups for resources can be set only by item sets.' // @translate
             );
             $messenger->addSuccess($message);
         }
 
         $recursiveItems = !empty($config['group']['config']['group_recursive_items']);
-        $message = new \Omeka\Stdlib\Message(
-            $translator->translate('Recursive items: %s'), // @translate
-            $recursiveItems
-                ? $translator->translate('yes') // @translate
-                : $translator->translate('no') // @translate
-        );
+        $message = $recursiveItems
+            ? new PsrMessage('Recursive items: yes') // @translate
+            : new PsrMessage('Recursive items: no'); // @translate
         $messenger->addSuccess($message);
 
         if (!$recursiveItemSets && $recursiveItems) {
-            $message = new \Omeka\Stdlib\Message(
-                $translator->translate('The groups for medias can be set only at items level.') // @translate
+            $message = new PsrMessage(
+                'The groups for medias can be set only at items level.' // @translate
             );
             $messenger->addSuccess($message);
         }

@@ -1,13 +1,14 @@
 <?php declare(strict_types=1);
+
 namespace Group\Controller\Admin;
 
+use Common\Stdlib\PsrMessage;
 use Group\Form\GroupForm;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
-use Omeka\Stdlib\Message;
 
 class GroupController extends AbstractActionController
 {
@@ -162,13 +163,13 @@ class GroupController extends AbstractActionController
             if ($form->isValid()) {
                 $response = $this->api($form)->create('groups', $data);
                 if ($response) {
-                    $message = new Message(
-                        'Group successfully created. %s', // @translate
-                        sprintf(
-                            '<a href="%s">%s</a>',
-                            htmlspecialchars($this->url()->fromRoute(null, [], true)),
-                            $this->translate('Add another group?') // @translate
-                    ));
+                    $message = new PsrMessage(
+                        'Group successfully created. {link}Add another group?{link_end}', // @translate
+                        [
+                            'link' => sprintf('<a href="%s">', htmlspecialchars($this->url()->fromRoute(null, [], true))),
+                            'link_end' => '</a>',
+                        ]
+                    );
                     $message->setEscapeHtml(false);
                     $this->messenger()->addSuccess($message);
                     return $this->redirect()->toUrl($response->getContent()->url());
@@ -264,9 +265,10 @@ class GroupController extends AbstractActionController
             ]);
             $content = $response->getContent();
             if (empty($content)) {
-                throw new \Omeka\Api\Exception\NotFoundException((string) new Message(
-                    '%s entity with criteria {"%s":"%s"} not found.', // @translate
-                    'Group\Entity\Group', 'name', $name));
+                throw new \Omeka\Api\Exception\NotFoundException((string) (new PsrMessage(
+                    '{entity} entity with criteria {"name":"{group_name}"} not found.', // @translate
+                    ['entity' => 'Group\Entity\Group', 'group_name' => $name]
+                ))->setTranslator($this->translator()));
             }
             $content = is_array($content) && count($content) ? $content[0] : null;
             $response->setContent($content);
