@@ -10,8 +10,8 @@ authentication systems, and to set the same groups to any resources, so their
 visibility can be managed in a more flexible way.
 
 In the admin interface, this module decreases the access of the identified users
-to the resources, and, in the public interface, with the module [Guest User], it
-increases the access of guest users to private resources.
+to the resources, and, in the public interface, with the modules [Guest] or [Guest Role],
+it increases the access of guest users to private resources.
 
 So, it doesn’t replace the main public/private rule, but adds another level of
 rules for visibility. For example, a user who belongs to group "Alpha" can
@@ -30,9 +30,21 @@ you have to unset the `view-all` right via another module or via a contribution.
 Installation
 ------------
 
-Uncompress files and rename module folder "Group".
+See general end user documentation for [installing a module].
 
-See general end user documentation for [Installing a module].
+This module requires the module [Common], that should be installed first.
+
+* From the zip
+
+Download the last release [Group.zip] from the list of releases, and
+uncompress it in the `modules` directory.
+
+* From the source and for development
+
+If the module was installed from the source, rename the name of the folder of
+the module to `Group`.
+
+Then install it like any other Omeka module and follow the config instructions.
 
 
 Usage
@@ -88,7 +100,10 @@ before.
 TODO
 ----
 
-- [ ] Remove complicate processes used to bypass some Omeka < 2.0 issues.
+- [ ] Remove complicate processes used to bypass some Omeka < 2.0 issues, in particular for batch process and listeners.
+- [ ] Replace the two tables "group_user" and "group_resource" by one "grouping" with one column "entity_type"
+      It will simplify a lot of things, but will this improve performance (search with a ternary key)?
+      This will be checked if a new group of something is needed (for sites).
 
 
 Warning
@@ -139,13 +154,15 @@ of the CeCILL license and that you accept its terms.
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2017-2023 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2017-2025 (see [Daniel-KM] on GitLab)
 
 
 [Group]: https://gitlab.com/Daniel-KM/Omeka-S-module-Group
 [Omeka S]: https://omeka.org/s
-[Guest User]: https://github.com/biblibre/omeka-s-module-GuestUser
-[Installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
+[Guest]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
+[Guest Role]: https://github.com/biblibre/omeka-s-module-GuestRole
+[Common]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common
+[installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Group/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
