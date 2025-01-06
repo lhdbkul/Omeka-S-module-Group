@@ -1,4 +1,4 @@
-@media screen {
+@media all {
     header nav .groups:before,
     .groups .subhead::before,
     #groups .no-resources:before,
