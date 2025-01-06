@@ -65,9 +65,7 @@ class GroupSelect extends Select
                 'resource_value_options' => [
                     'resource' => 'groups',
                     'query' => [],
-                    'option_text_callback' => function ($v) {
-                        return $v->name();
-                    },
+                    'option_text_callback' => fn ($v) => $v->name(),
                 ],
                 'name_as_value' => true,
             ];

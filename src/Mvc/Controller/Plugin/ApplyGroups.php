@@ -333,14 +333,10 @@ class ApplyGroups extends AbstractPlugin
             if ($firstGroup instanceof AbstractEntity) {
                 return $this->listWithIdAsKey($groups);
             }
-            $groups = array_map(function ($v) {
-                return $v->id();
-            }, $groups);
+            $groups = array_map(fn ($v) => $v->id(), $groups);
             $firstGroup = reset($groups);
         } elseif (is_array($firstGroup)) {
-            $groups = array_map(function ($v) {
-                return $v['o:id'] ?? ($v['o:name'] ?? reset($v));
-            }, $groups);
+            $groups = array_map(fn ($v) => $v['o:id'] ?? ($v['o:name'] ?? reset($v)), $groups);
             $firstGroup = reset($groups);
         }
 

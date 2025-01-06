@@ -63,9 +63,7 @@ trait QueryBuilderTrait
     protected function buildQueryMultipleValues(QueryBuilder $qb, array $values, $column, $target): void
     {
         $hasNull = in_array(null, $values, true);
-        $values = array_filter($values, function ($v) {
-            return !is_null($v);
-        });
+        $values = array_filter($values, fn ($v) => !is_null($v));
         if ($values) {
             $expr = $qb->expr();
 
@@ -187,9 +185,7 @@ trait QueryBuilderTrait
     protected function buildQueryMultipleValuesItself(QueryBuilder $qb, array $values, $target): void
     {
         $hasNull = in_array(null, $values, true);
-        $values = array_filter($values, function ($v) {
-            return !is_null($v);
-        });
+        $values = array_filter($values, fn ($v) => !is_null($v));
         if ($values) {
             $expr = $qb->expr();
 

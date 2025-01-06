@@ -156,9 +156,10 @@ class GroupCount extends AbstractHelper
         if ($groups) {
             // Get a list of group names from a various list of groups (entity,
             // representation, names).
-            $groups = array_unique(array_map(function ($v) {
-                return is_object($v) ? ($v instanceof Group ? $v->getName() : $v->name()) : $v;
-            }, is_array($groups) || $groups instanceof ArrayCollection ? $groups : [$groups]));
+            $groups = array_unique(array_map(
+                fn ($v) => is_object($v) ? ($v instanceof Group ? $v->getName() : $v->name()) : $v,
+                is_array($groups) || $groups instanceof ArrayCollection ? $groups : [$groups])
+            );
 
             $isId = preg_match('~^\d+$~', reset($groups));
             if ($isId) {

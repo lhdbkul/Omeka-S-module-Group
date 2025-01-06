@@ -30,9 +30,7 @@ class GroupMapping extends AbstractMapping
         foreach ($row as $index => $values) {
             if (array_key_exists($index, $multivalueMap) && strlen($multivalueMap[$index])) {
                 $values = explode($multivalueMap[$index], $values);
-                $values = array_map(function ($v) {
-                    return trim($v, "\t\n\r \u{a0}\u{202f}");
-                }, $values);
+                $values = array_map(fn ($v) => trim($v, "\t\n\r \u{a0}\u{202f}"), $values);
             } else {
                 $values = [$values];
             }
