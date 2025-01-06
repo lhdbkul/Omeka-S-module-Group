@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Db\Event\Listener;
 
 use Doctrine\ORM\Event\PreFlushEventArgs;

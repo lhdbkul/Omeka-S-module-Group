@@ -6,9 +6,13 @@
  * @var \Omeka\Api\Representation\AbstractEntityRepresentation|null $resource
  */
 
-$translate = $this->plugin('translate');
-$this->headLink()->appendStylesheet($this->assetUrl('css/group.css', 'Group'));
-$this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$assetUrl = $plugins->get('assetUrl');
+$translate = $plugins->get('translate');
+
+$this->headLink()->appendStylesheet($assetUrl('css/group.css', 'Group'));
+$this->headScript()->appendFile($assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
 <style>
@@ -39,7 +43,6 @@ $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/j
         <?php endif; ?>
     <?php else: ?>
             <?php
-            $escape = $this->plugin('escapeHtml');
             $updateRight = false; // $this->userIsAllowed(Group::class, 'update');
             $browseUserRight = $this->userIsAllowed('Omeka\Controller\Admin\User', 'browse');
             ?>

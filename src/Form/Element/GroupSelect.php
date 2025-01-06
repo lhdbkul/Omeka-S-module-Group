@@ -2,34 +2,24 @@
 
 namespace Group\Form\Element;
 
+use Common\Form\Element\TraitOptionalElement;
 use Laminas\Form\Element\Select;
 use Laminas\View\Helper\Url;
 use Omeka\Api\Manager as ApiManager;
 
 class GroupSelect extends Select
 {
-    /**
-     * @var ApiManager
-     */
-    protected $apiManager;
+    use TraitOptionalElement;
 
     /**
-     * @var Url
+     * @var \Omeka\Api\Manager
+     */
+    protected $api;
+
+    /**
+     * @var \Laminas\View\Helper\Url
      */
     protected $urlHelper;
-
-    /**
-     * @see https://github.com/zendframework/zendframework/issues/2761#issuecomment-14488216
-     *
-     * {@inheritDoc}
-     * @see \Laminas\Form\Element\Select::getInputSpecification()
-     */
-    public function getInputSpecification(): array
-    {
-        $inputSpecification = parent::getInputSpecification();
-        $inputSpecification['required'] = !empty($this->attributes['required']);
-        return $inputSpecification;
-    }
 
     public function getValueOptions(): array
     {
@@ -44,7 +34,7 @@ class GroupSelect extends Select
         $nameAsValue = $this->getOption('name_as_value', false);
 
         $valueOptions = [];
-        $response = $this->getApiManager()->search('groups', $query);
+        $response = $this->api->search('groups', $query);
         foreach ($response->getContent() as $representation) {
             $name = $representation->name();
             $key = $nameAsValue ? $name : $representation->id();
@@ -78,11 +68,10 @@ class GroupSelect extends Select
                 $options['name_as_value'] = $defaultOptions['name_as_value'];
             }
 
-            $urlHelper = $this->getUrlHelper();
             $defaultAttributes = [
                 'class' => 'chosen-select',
                 'data-placeholder' => 'Select groups…', // @translate
-                'data-api-base-url' => $urlHelper('api/default', ['resource' => 'groups']),
+                'data-api-base-url' => $this->urlHelper->__invoke('api/default', ['resource' => 'groups']),
             ];
             $this->setAttributes($defaultAttributes);
         }
@@ -90,25 +79,15 @@ class GroupSelect extends Select
         return parent::setOptions($options);
     }
 
-    public function setApiManager(ApiManager $apiManager): self
+    public function setApi(ApiManager $api): self
     {
-        $this->apiManager = $apiManager;
+        $this->api = $api;
         return $this;
-    }
-
-    public function getApiManager(): ApiManager
-    {
-        return $this->apiManager;
     }
 
     public function setUrlHelper(Url $urlHelper): self
     {
         $this->urlHelper = $urlHelper;
         return $this;
-    }
-
-    public function getUrlHelper(): Url
-    {
-        return $this->urlHelper;
     }
 }

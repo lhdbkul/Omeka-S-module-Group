@@ -11,19 +11,19 @@ use Omeka\Permissions\Acl;
 class ListGroups extends AbstractPlugin
 {
     /**
-     * @var ApiManager
-     */
-    protected $api;
-
-    /**
-     * @var Acl
+     * @var \Omeka\Permissions\Acl
      */
     protected $acl;
 
-    public function __construct(ApiManager$api, Acl $acl)
+    /**
+     * @var \Omeka\Api\Manager
+     */
+    protected $api;
+
+    public function __construct(Acl $acl, ApiManager$api)
     {
-        $this->api = $api;
         $this->acl = $acl;
+        $this->api = $api;
     }
 
     /**

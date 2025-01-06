@@ -17,17 +17,17 @@ use Omeka\Permissions\Acl;
 class ApplyGroups extends AbstractPlugin
 {
     /**
-     * @var ApiManager
-     */
-    protected $api;
-
-    /**
-     * @var Acl
+     * @var \Omeka\Permissions\Acl
      */
     protected $acl;
 
     /**
-     * @var EntityManager
+     * @var \Omeka\Api\Manager
+     */
+    protected $api;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
      */
     protected $entityManager;
 
@@ -36,15 +36,10 @@ class ApplyGroups extends AbstractPlugin
      */
     protected $isUser;
 
-    /**
-     * @param ApiManager $api
-     * @param Acl $acl
-     * @param EntityManager $entityManager
-     */
-    public function __construct(ApiManager$api, Acl $acl, EntityManager $entityManager)
+    public function __construct(Acl $acl, ApiManager$api, EntityManager $entityManager)
     {
-        $this->api = $api;
         $this->acl = $acl;
+        $this->api = $api;
         $this->entityManager = $entityManager;
     }
 

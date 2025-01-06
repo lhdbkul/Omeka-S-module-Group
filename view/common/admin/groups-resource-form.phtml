@@ -7,10 +7,11 @@
 
 $plugins = $this->getHelperPluginManager();
 $escape = $plugins->get('escapeHtml');
+$assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 
-$this->headLink()->appendStylesheet($this->assetUrl('css/group.css', 'Group'));
-$this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
+$this->headLink()->appendStylesheet($assetUrl('css/group.css', 'Group'));
+$this->headScript()->appendFile($assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
 
 $removeStr = $escape($translate('Remove group'));
 $groupTemplate = '

@@ -84,6 +84,7 @@ class Module extends AbstractModule
         $this->addAclRules();
 
         // Allows to manage batch processes.
+        // TODO Remove the fix to detach orphan groups that may be useless since Omeka S v2.0.
         $entityManager = $this->getServiceLocator()->get('Omeka\EntityManager');
         $entityManager->getEventManager()->addEventListener(
             Events::preFlush,
@@ -189,6 +190,7 @@ class Module extends AbstractModule
 
         // Bypass the core filter for media (detach two events of Omeka\Module).
         // The listeners can't be cleared without a module weighting system.
+        // TODO Check if this fix is still needed with last versions of Omeka, were module are loaded alphabetically.
         $listeners = $sharedEventManager->getListeners([MediaAdapter::class], 'api.search.query');
         $sharedEventManager->detach(
             [$listeners[1][0][0], 'filterMedia'],

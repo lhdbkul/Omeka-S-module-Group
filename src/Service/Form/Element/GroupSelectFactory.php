@@ -12,7 +12,7 @@ class GroupSelectFactory implements FactoryInterface
     {
         $element = new GroupSelect(null, $options ?? []);
         return $element
-            ->setApiManager($services->get('Omeka\ApiManager'))
+            ->setApi($services->get('Omeka\ApiManager'))
             ->setUrlHelper($services->get('ViewHelperManager')->get('Url'));
     }
 }

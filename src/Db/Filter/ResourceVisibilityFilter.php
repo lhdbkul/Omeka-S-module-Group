@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Db\Filter;
 
 use Doctrine\DBAL\Types\Type;
@@ -37,13 +38,14 @@ class ResourceVisibilityFilter extends \Omeka\Db\Filter\ResourceVisibilityFilter
             // TODO Use a named query.
             // TODO Add a join the resource type to improve the sub query (which alias? which id?)
             // INNER JOIN item ON group_resource.resource_id = item.id LIMIT 1
-            $constraints .= sprintf(
-                '
-OR %s.id IN (
-    SELECT group_resource.resource_id
-    FROM group_resource
-    INNER JOIN group_user ON group_resource.group_id = group_user.group_id AND group_user.user_id = %s
-)',
+            $constraints .= "\n" . sprintf(
+                <<<'SQL'
+                    OR %s.id IN (
+                        SELECT group_resource.resource_id
+                        FROM group_resource
+                        INNER JOIN group_user ON group_resource.group_id = group_user.group_id AND group_user.user_id = %s
+                    )
+                    SQL,
                 $alias,
                 (int) $identity->getId()
             );
