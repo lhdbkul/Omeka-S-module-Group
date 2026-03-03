@@ -147,7 +147,7 @@ $deleteRight = $this->userIsAllowed(\Group\Api\Adapter\GroupAdapter::class, 'del
             <td><?php if ($groupCount[$name]['item_sets']) echo $hyperlink(
                 $groupCount[$name]['item_sets'], $group->urlEntities('item-set'), ['class' => 'group-browse-item-sets']
             ); ?></td>
-            <td><?php if ($groupCount[$name]['media']) echo $hyperlink(
+            <td><?php if ($groupCount[$name]['items']) echo $hyperlink(
                 $groupCount[$name]['items'], $group->urlEntities('item'), ['class' => 'group-browse-items']
             ); ?></td>
             <td><?php if ($groupCount[$name]['media']) echo $hyperlink(
