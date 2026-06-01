@@ -11,7 +11,6 @@ use Omeka\Entity\ItemSet;
 use Omeka\Entity\Media;
 use Omeka\Entity\Resource;
 use Omeka\Entity\User;
-use PDO;
 
 class GroupCount extends AbstractHelper
 {
@@ -191,11 +190,11 @@ class GroupCount extends AbstractHelper
             ->groupBy('`_groups`.`id`')
             ->orderBy($orderBy, $orderDir);
 
-        $stmt = $this->connection->executeQuery($qb, $qb->getParameters());
+        $stmt = $this->connection->executeQuery($qb->getSQL(), $qb->getParameters(), $qb->getParameterTypes());
         if ($keyPair && $resourceType) {
             $result = $stmt->fetchAllKeyValue();
         } else {
-            $result = $stmt->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_UNIQUE);
+            $result = $stmt->fetchAllAssociativeIndexed();
         }
 
         // Manage the exception (all counts of users and resources).

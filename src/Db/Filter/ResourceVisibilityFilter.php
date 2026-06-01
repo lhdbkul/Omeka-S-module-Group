@@ -2,7 +2,7 @@
 
 namespace Group\Db\Filter;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * Filter resources by default rules and by groups too.
