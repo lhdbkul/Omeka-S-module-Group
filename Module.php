@@ -131,7 +131,8 @@ class Module extends AbstractModule
             }
         }
 
-        // Everybody can read own groups.
+        // Everybody, including anonymous, can read and search all groups, to
+        // ease querying resources by group; managing them stays admin-only.
         $roles = $acl->getRoles();
         $adminRoles = [
             \Omeka\Permissions\Acl::ROLE_GLOBAL_ADMIN,
@@ -493,13 +494,15 @@ class Module extends AbstractModule
      */
     public function filterEntityJsonLd(Event $event): void
     {
-        // The groups are not shown to public, only admin users.
+        // Groups are deliberately public to ease querying resources by group;
+        // exposing them is not the goal, but the groups api is open anyway.
         $services = $this->getServiceLocator();
         $controllerPlugins = $services->get('ControllerPluginManager');
         $listGroups = $controllerPlugins->get('listGroups');
 
         $resource = $event->getTarget();
         $jsonLd = $event->getParam('jsonLd');
+        // Each group is a reference carrying an absolute public API @id.
         $groups = $listGroups($resource, 'reference');
         $jsonLd['o-module-group:group'] = array_values($groups);
         $event->setParam('jsonLd', $jsonLd);

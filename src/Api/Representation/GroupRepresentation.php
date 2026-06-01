@@ -30,15 +30,44 @@ class GroupRepresentation extends AbstractEntityRepresentation
 
     public function getJsonLd()
     {
+        // Only the core resource types are listed here, with a stable shape.
+        // Digital objects (optional module) are reachable through the generic
+        // "/api/digital_objects?group={id}", and each digital object already
+        // carries its groups via "o-module-group:group".
         return [
             'o:id' => $this->id(),
             'o:name' => $this->name(),
             'o:comment' => $this->comment(),
-            'o:users' => $this->urlEntities('user'),
-            'o:item_sets' => $this->urlEntities('item-set'),
-            'o:items' => $this->urlEntities('item'),
-            'o:media' => $this->urlEntities('media'),
+            'o:users' => $this->apiUrlEntities('users'),
+            'o:item_sets' => $this->apiUrlEntities('item_sets'),
+            'o:items' => $this->apiUrlEntities('items'),
+            'o:media' => $this->apiUrlEntities('media'),
         ];
+        /*
+        if ($this->getServiceLocator()->get('Omeka\ApiAdapterManager')->has('digital_objects')) {
+            $jsonLd['o:digital_objects'] = $this->apiUrlEntities('digital_objects');
+        }
+        return $jsonLd;
+        */
+    }
+
+    /**
+     * Absolute public API url listing this group's resources of a given type.
+     *
+     * @param string $resourceName API resource name, for example "items".
+     * @return string
+     */
+    protected function apiUrlEntities(string $resourceName): string
+    {
+        $url = $this->getViewHelper('Url');
+        return $url(
+            'api/default',
+            ['resource' => $resourceName],
+            [
+                'query' => ['group' => $this->id()],
+                'force_canonical' => true,
+            ]
+        );
     }
 
     public function getReference()
