@@ -661,15 +661,14 @@ class Module extends AbstractModule
         $aboveGroups = $this->takeGroupsFromAbove($resourceType);
         $recursive = $this->isRecursive($resourceType);
 
-        // Manage partial update (and avoid a batch issue, without clear).
-        if ($recursive) {
-            if (!$resourceAdapter->shouldHydrate($request, 'o:item_set')) {
-                return;
-            }
-        } else {
-            if (!$resourceAdapter->shouldHydrate($request, 'o-module-group:group')) {
-                return;
-            }
+        // Only touch groups when they were actually submitted, or, when items
+        // inherit groups from their item sets, when the item set membership
+        // changed. Otherwise a batch update of "o:item_set" alone would wipe
+        // the groups (replace with an empty submitted list). GitHub #5.
+        $groupSubmitted = $resourceAdapter->shouldHydrate($request, 'o-module-group:group');
+        $itemSetChanged = $aboveGroups && $resourceAdapter->shouldHydrate($request, 'o:item_set');
+        if (!$groupSubmitted && !$itemSetChanged) {
+            return;
         }
 
         $resource = $event->getParam('response')->getContent();
