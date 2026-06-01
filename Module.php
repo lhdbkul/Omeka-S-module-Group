@@ -800,7 +800,9 @@ class Module extends AbstractModule
         $view = $event->getTarget();
         $assetUrl = $view->plugin('assetUrl');
         $view->headLink()->appendStylesheet($assetUrl('css/group.css', 'Group'));
-        $view->headScript()->appendFile($assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
+        $view->headScript()
+            ->appendFile($assetUrl('js/common-dialog.js', 'Common'), 'text/javascript', ['defer' => 'defer'])
+            ->appendFile($assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
     }
 
     public function addUserFormElement(Event $event): void

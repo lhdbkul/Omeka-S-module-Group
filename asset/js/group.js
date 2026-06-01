@@ -78,20 +78,17 @@ $('.groups .group-name[contenteditable=true]')
                     field.addClass('o-icon-transmit');
                 }
             })
-            .done(function(data) {
+            .done(function(response) {
+                var data = response.data;
                 var row = field.closest('tr');
-                field.text(data.content.text);
-                field.data('update-url', data.content.urls.update);
-                row.find('[name="resource_ids[]"]').val(data.content.escaped);
-                row.find('.o-icon-delete').data('sidebar-content-url', data.content.urls.delete_confirm);
-                row.find('.o-icon-more').data('sidebar-content-url', data.content.urls.show_details);
+                field.text(data.text);
+                field.data('update-url', data.urls.update);
+                row.find('[name="resource_ids[]"]').val(data.escaped);
+                row.find('.o-icon-delete').data('sidebar-content-url', data.urls.delete_confirm);
+                row.find('.o-icon-more').data('sidebar-content-url', data.urls.show_details);
             })
-            .fail(function(jqXHR, textStatus) {
-                var msg = jqXHR.hasOwnProperty('responseJSON')
-                    && typeof jqXHR.responseJSON.error !== 'undefined'
-                    ? jqXHR.responseJSON.error
-                    : Omeka.jsTranslate('Something went wrong');
-                alert(msg);
+            .fail(function(jqXHR) {
+                CommonDialog.jSendFail(jqXHR);
                 field.text(oldText);
             })
             .always(function () {

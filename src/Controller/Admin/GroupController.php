@@ -4,9 +4,7 @@ namespace Group\Controller\Admin;
 
 use Common\Stdlib\PsrMessage;
 use Group\Form\GroupForm;
-use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
 
@@ -191,65 +189,26 @@ class GroupController extends AbstractActionController
         $id = $group->id();
         $name = $this->params()->fromPost('text');
 
-        $data = [];
-        $data['o:name'] = $name;
-        $response = $this->api()->update('groups', $id, $data, [], ['isPartial' => true]);
+        $response = $this->api()->update('groups', $id, ['o:name' => $name], [], ['isPartial' => true]);
         if (!$response) {
-            return $this->jsonErrorName();
+            return $this->jSend()->fail(null, $this->translate('This group is invalid: it is a duplicate or it contains forbidden characters.')); // @translate
         }
 
         $group = $response->getContent();
         $escape = $this->viewHelpers()->get('escapeHtml');
-        return new JsonModel([
-            'content' => [
-                'text' => $group->name(),
-                'escaped' => $escape($group->name()),
-                'urls' => [
-                    'update' => $group->url('update'),
-                    'show_details' => $group->url('show-details'),
-                    'delete_confirm' => $group->url('delete-confirm'),
-                    'users' => $group->urlEntities('user'),
-                    'item_sets' => $group->urlEntities('item-set'),
-                    'items' => $group->urlEntities('item'),
-                    'media' => $group->urlEntities('media'),
-                ],
+        return $this->jSend()->success([
+            'text' => $group->name(),
+            'escaped' => $escape($group->name()),
+            'urls' => [
+                'update' => $group->url('update'),
+                'show_details' => $group->url('show-details'),
+                'delete_confirm' => $group->url('delete-confirm'),
+                'users' => $group->urlEntities('user'),
+                'item_sets' => $group->urlEntities('item-set'),
+                'items' => $group->urlEntities('item'),
+                'media' => $group->urlEntities('media'),
             ],
         ]);
-    }
-
-    protected function jsonErrorEmpty()
-    {
-        $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_400);
-        return new JsonModel(['error' => 'No groups submitted.']); // @translate
-    }
-
-    protected function jsonErrorName()
-    {
-        $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_400);
-        return new JsonModel(['error' => 'This group is invalid: it is a duplicate or it contains forbidden characters.']); // @translate
-    }
-
-    protected function jsonErrorUnauthorized()
-    {
-        $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_403);
-        return new JsonModel(['error' => 'Unauthorized access.']); // @translate
-    }
-
-    protected function jsonErrorNotFound()
-    {
-        $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_404);
-        return new JsonModel(['error' => 'Group not found.']); // @translate
-    }
-
-    protected function jsonErrorUpdate()
-    {
-        $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_500);
-        return new JsonModel(['error' => 'An internal error occurred.']); // @translate
     }
 
     protected function apiReadFromIdOrName()
