@@ -1,4 +1,9 @@
 @media all {
+    .section-nav {
+        height: initial;
+        min-height: 42px;
+    }
+
     header nav .groups:before,
     .groups .subhead::before,
     #groups .no-resources:before,
@@ -135,15 +140,15 @@
         content: "";
     }
     .groups .o-icon-approved::before {
-        color: #00FF00;
+        color: #2A7D2A;
         content: "";
     }
     .groups .o-icon-rejected::before {
-        color: #FF0000;
+        color: #A91919;
         content: "";
     }
     .groups .o-icon-undefined::before {
-        color: #FF0000;
+        color: #A91919;
         content: "";
     }
     .groups .o-icon-none::before {
