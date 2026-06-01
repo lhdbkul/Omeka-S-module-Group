@@ -127,7 +127,7 @@ class ApplyGroups extends AbstractPlugin
                     // always on medias too.
                     $this->applyGroupsToItemAndMedia($entity, null, true, null);
                 } elseif ($recursive) {
-                    $this->applyGroupsToItemAndMedia($entity, $groups, false, null);
+                    $this->applyGroupsToItemAndMedia($entity, $groups, false, null, $collectionAction);
                 } else {
                     $this->applyGroupsToEntity($entity, $groups, $collectionAction);
                 }
@@ -209,26 +209,31 @@ class ApplyGroups extends AbstractPlugin
      * @param array $groups
      * @param bool $aboveGroups
      * @param ItemSet $itemSet
+     * @param string $collectionAction "replace" (default), "remove" or
+     * "append". Ignored when $aboveGroups is true, since groups are then fully
+     * recomputed from the item sets and must replace the current ones.
      */
     protected function applyGroupsToItemAndMedia(
         Item $item,
         array $groups = null,
         $aboveGroups = false,
-        ItemSet $itemSet = null
+        ItemSet $itemSet = null,
+        $collectionAction = 'replace'
     ): void {
         if ($aboveGroups) {
             // Get all groups to apply, with id as key.
             $newGroups = $this->getItemGroupsFromItemSets($item, $itemSet, $groups);
+            $collectionAction = 'replace';
         } else {
             $newGroups = $groups ?: [];
         }
 
         // Apply these groups to the item.
-        $this->applyGroupsToEntity($item, $newGroups);
+        $this->applyGroupsToEntity($item, $newGroups, $collectionAction);
 
         // Process all these groups to all the media of the item.
         foreach ($item->getMedia() as $media) {
-            $this->applyGroupsToEntity($media, $newGroups);
+            $this->applyGroupsToEntity($media, $newGroups, $collectionAction);
         }
     }
 
