@@ -225,6 +225,9 @@ class Module extends AbstractModule
             ItemSetRepresentation::class,
             ItemRepresentation::class,
             MediaRepresentation::class,
+            // Optional module: referenced as a string, attached only if
+            // present.
+            'DigitalObject\Api\Representation\DigitalObjectRepresentation',
         ];
         foreach ($representations as $representation) {
             $sharedEventManager->attach(
@@ -239,6 +242,9 @@ class Module extends AbstractModule
             ItemSetAdapter::class,
             ItemAdapter::class,
             MediaAdapter::class,
+            // Optional module: referenced as a string, attached only if
+            // present.
+            'DigitalObject\Api\Adapter\DigitalObjectAdapter',
         ];
         foreach ($adapters as $adapter) {
             // Add the group filter to the search.
@@ -340,6 +346,8 @@ class Module extends AbstractModule
                 'Omeka\Controller\Admin\Media',
             ];
         }
+        // Optional module DigitalObject: autonomous resource, no recursion.
+        $controllers[] = 'DigitalObject\Controller\Admin\DigitalObject';
         foreach ($controllers as $controller) {
             // Add the group element form to the resource form.
             $sharedEventManager->attach(
@@ -368,6 +376,7 @@ class Module extends AbstractModule
             'Omeka\Controller\Admin\ItemSet',
             'Omeka\Controller\Admin\Item',
             'Omeka\Controller\Admin\Media',
+            'DigitalObject\Controller\Admin\DigitalObject',
         ];
         foreach ($controllers as $controller) {
             // Add the show groups to the resource show admin pages.
@@ -390,6 +399,7 @@ class Module extends AbstractModule
             'Omeka\Controller\Admin\ItemSet',
             'Omeka\Controller\Admin\Item',
             'Omeka\Controller\Admin\Media',
+            'DigitalObject\Controller\Admin\DigitalObject',
             'Omeka\Controller\Admin\Query',
         ];
         foreach ($controllers as $controller) {
@@ -945,6 +955,8 @@ class Module extends AbstractModule
             $vars->offsetSet('resource', $vars->itemSet);
         } elseif (isset($vars->media)) {
             $vars->offsetSet('resource', $vars->media);
+        } elseif (isset($vars->digitalObject)) {
+            $vars->offsetSet('resource', $vars->digitalObject);
         } else {
             $vars->offsetSet('resource', null);
             $vars->offsetSet('groups', []);

@@ -134,18 +134,25 @@ class GroupRepresentation extends AbstractEntityRepresentation
      * the root id, so a single group always returns a total of one.
      *
      * @param string $resourceType One of "resources" (default), "item_sets",
-     * "items", "media" or "users".
+     * "items", "media", "digital_objects" or "users". Optional types whose
+     * module is not installed return zero.
      * @return int
      */
     public function count($resourceType = 'resources'): int
     {
         if (!isset($this->cacheCounts[$resourceType])) {
+            $services = $this->getServiceLocator();
             if ($resourceType === 'resources') {
                 $this->cacheCounts[$resourceType] = $this->count('item_sets')
                     + $this->count('items')
-                    + $this->count('media');
+                    + $this->count('media')
+                    + $this->count('digital_objects');
+            } elseif (!$services->get('Omeka\ApiAdapterManager')->has($resourceType)) {
+                // Optional resource type (e.g. digital_objects) whose module is
+                // not installed.
+                $this->cacheCounts[$resourceType] = 0;
             } else {
-                $response = $this->getServiceLocator()->get('Omeka\ApiManager')
+                $response = $services->get('Omeka\ApiManager')
                     ->search($resourceType, [
                         'group' => [$this->id()],
                         'limit' => 0,
@@ -175,12 +182,29 @@ class GroupRepresentation extends AbstractEntityRepresentation
      * Similar to url(), but with the type of resources.
      *
      * @param string|null $resourceType May be "resource" (unsupported),
-     * "item-set", "item", "media" or "user".
+     * "item-set", "item", "media", "digital-object" or "user".
      * @param bool $canonical Whether to return an absolute URL
      * @return string
      */
     public function urlEntities($resourceType = null, $canonical = false): string
     {
+        $url = $this->getViewHelper('Url');
+
+        // The optional module DigitalObject uses a dedicated admin route.
+        if (in_array($resourceType, ['digital_objects', 'digital-object'], true)) {
+            if (!$this->getServiceLocator()->get('Omeka\ApiAdapterManager')->has('digital_objects')) {
+                return '';
+            }
+            return $url(
+                'admin/digital-object',
+                [],
+                [
+                    'query' => ['group' => $this->name()],
+                    'force_canonical' => $canonical,
+                ]
+            );
+        }
+
         $mapResource = [
             null => 'item',
             'resources' => 'resource',
@@ -191,7 +215,6 @@ class GroupRepresentation extends AbstractEntityRepresentation
         if (isset($mapResource[$resourceType])) {
             $resourceType = $mapResource[$resourceType];
         }
-        $url = $this->getViewHelper('Url');
         return $url(
             'admin/default',
             ['controller' => $resourceType, 'action' => 'browse'],

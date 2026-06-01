@@ -81,6 +81,8 @@ class GroupAdapter extends AbstractEntityAdapter
             'item_set_id' => ItemSet::class,
             'item_id' => Item::class,
             'media_id' => Media::class,
+            // Optional module: referenced as a string, joined only if queried.
+            'digital_object_id' => 'DigitalObject\Entity\DigitalObject',
         ];
         $subQueryKeys = array_intersect_key($mapResourceTypes, $query);
         foreach ($subQueryKeys as $queryKey => $resourceType) {
@@ -141,6 +143,8 @@ class GroupAdapter extends AbstractEntityAdapter
                 'item_sets' => ItemSet::class,
                 'items' => Item::class,
                 'media' => Media::class,
+                // Optional module: referenced as a string, joined if installed.
+                'digital_objects' => 'DigitalObject\Entity\DigitalObject',
             ];
             if (isset($mapResourceTypes[$query['resource_type']])) {
                 $entityJoinClass = $query['resource_type'] === 'users'
@@ -193,6 +197,7 @@ class GroupAdapter extends AbstractEntityAdapter
                 case 'item_sets':
                 case 'items':
                 case 'media':
+                case 'digital_objects':
                     break;
                 case 'group':
                     $query['sort_by'] = 'name';
