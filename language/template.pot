@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-06 00:00+0000\n"
+"POT-Creation-Date: 2026-06-01 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:102
+#: Module.php:104
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr ""
 
-#: Module.php:910 view/common/admin/group-mapping-sidebar.phtml:16
+#: Module.php:936 view/common/admin/group-mapping-sidebar.phtml:16
 #: view/common/admin/groups-resource-form.phtml:32
 #: view/common/admin/groups-resource-list.phtml:31
 #: view/common/admin/groups-resource.phtml:23
@@ -30,12 +30,17 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: Module.php:1046
+#: Module.php:1074
 msgid "Has groups"
 msgstr ""
 
-#: Module.php:1047
+#: Module.php:1075
 msgid "true"
+msgstr ""
+
+#: src/Controller/Admin/GroupController.php:194
+msgid ""
+"This group is invalid: it is a duplicate or it contains forbidden characters."
 msgstr ""
 
 #: view/common/admin/group-mapping-sidebar.phtml:17
@@ -175,6 +180,10 @@ msgstr ""
 msgid "There are no groups."
 msgstr ""
 
+#: view/group/admin/group/browse.phtml:114
+msgid "Select group"
+msgstr ""
+
 #: view/group/admin/group/browse.phtml:125
 #: view/group/admin/group/browse.phtml:126
 msgid "Edit name"
@@ -218,41 +227,41 @@ msgstr ""
 msgid "Groups are editable on the browse page."
 msgstr ""
 
-#: Module.php:875
+#: Module.php:901
 msgid "Remove groups"
 msgstr ""
 
-#: Module.php:890
+#: Module.php:916
 msgid "Add groups"
 msgstr ""
 
-#: Module.php:1065
+#: Module.php:1093
 msgid ""
 "The settings should be set in the file \"config/local.config.php\" of Omeka. "
 "See the file module.config.php of the module and readme."
 msgstr ""
 
-#: Module.php:1072
+#: Module.php:1100
 msgid "Recursive item sets: yes"
 msgstr ""
 
-#: Module.php:1073
+#: Module.php:1101
 msgid "Recursive item sets: no"
 msgstr ""
 
-#: Module.php:1078
+#: Module.php:1106
 msgid "The groups for resources can be set only by item sets."
 msgstr ""
 
-#: Module.php:1085
+#: Module.php:1113
 msgid "Recursive items: yes"
 msgstr ""
 
-#: Module.php:1086
+#: Module.php:1114
 msgid "Recursive items: no"
 msgstr ""
 
-#: Module.php:1091
+#: Module.php:1119
 msgid "The groups for medias can be set only at items level."
 msgstr ""
 
@@ -268,23 +277,23 @@ msgstr ""
 msgid "Select groups…"
 msgstr ""
 
-#: src/Api/Adapter/GroupAdapter.php:239
+#: src/Api/Adapter/GroupAdapter.php:244
 msgid "The name \"{group_name}\" is already taken."
 msgstr ""
 
-#: src/Api/Adapter/GroupAdapter.php:261
+#: src/Api/Adapter/GroupAdapter.php:266
 msgid "The name \"{group_name}\" contains forbidden characters."
 msgstr ""
 
-#: src/Api/Adapter/GroupAdapter.php:267
+#: src/Api/Adapter/GroupAdapter.php:272
 msgid "A name can’t contain only numbers."
 msgstr ""
 
-#: src/Api/Adapter/GroupAdapter.php:275
+#: src/Api/Adapter/GroupAdapter.php:280
 msgid "A name cannot be a reserved word."
 msgstr ""
 
-#: src/Api/Adapter/GroupAdapter.php:279
+#: src/Api/Adapter/GroupAdapter.php:284
 msgid "A group must have a name."
 msgstr ""
 
@@ -292,48 +301,27 @@ msgstr ""
 msgid "\"{identifier}\" is not a valid group."
 msgstr ""
 
-#: src/Controller/Admin/GroupController.php:73
+#: src/Controller/Admin/GroupController.php:71
 msgid "Group successfully deleted."
 msgstr ""
 
-#: src/Controller/Admin/GroupController.php:128
+#: src/Controller/Admin/GroupController.php:126
 msgid "You must select at least one group to batch delete."
 msgstr ""
 
-#: src/Controller/Admin/GroupController.php:138
+#: src/Controller/Admin/GroupController.php:136
 msgid "Groups successfully deleted."
 msgstr ""
 
-#: src/Controller/Admin/GroupController.php:149
+#: src/Controller/Admin/GroupController.php:147
 msgid "Delete of all groups is not supported currently."
 msgstr ""
 
-#: src/Controller/Admin/GroupController.php:167
+#: src/Controller/Admin/GroupController.php:165
 msgid "Group successfully created. {link}Add another group?{link_end}"
 msgstr ""
 
-#: src/Controller/Admin/GroupController.php:224
-msgid "No groups submitted."
-msgstr ""
-
-#: src/Controller/Admin/GroupController.php:231
-msgid ""
-"This group is invalid: it is a duplicate or it contains forbidden characters."
-msgstr ""
-
-#: src/Controller/Admin/GroupController.php:238
-msgid "Unauthorized access."
-msgstr ""
-
-#: src/Controller/Admin/GroupController.php:245
-msgid "Group not found."
-msgstr ""
-
-#: src/Controller/Admin/GroupController.php:252
-msgid "An internal error occurred."
-msgstr ""
-
-#: src/Controller/Admin/GroupController.php:269
+#: src/Controller/Admin/GroupController.php:228
 msgid "{entity} entity with criteria {\"name\":\"{group_name}\"} not found."
 msgstr ""
 
