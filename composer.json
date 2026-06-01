@@ -1,19 +1,42 @@
 {
     "name": "daniel-km/omeka-s-module-group",
-    "description": "Module for Omeka S to set groups to users and resources, so their visibility can be managed in a more flexible way.",
+    "type": "omeka-s-module",
+    "description": "Module for Omeka S: Add groups to users and resources to manage the access rights and the resource visibility in a more flexible way.",
+    "keywords": [
+        "Omeka S",
+        "Omeka S module",
+        "administration",
+        "group",
+        "rights"
+    ],
     "license": "CECILL-2.1",
+    "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-Group",
     "authors": [
         {
             "name": "Daniel Berthereau",
-            "email": "Daniel.github@Berthereau.net"
+            "email": "Daniel.packagist@Berthereau.net"
         }
     ],
-    "require-dev": {
-        "biblibre/omeka-s-test-helper": "dev-master"
+    "support": {
+        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-Group/-/issues",
+        "forum": "https://forum.omeka.org/"
+    },
+    "_require (not set until Omeka S merges PR #2432)": {
+        "omeka/omeka-s": "^4.0",
+        "daniel-km/omeka-s-module-common": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Group\\": "src/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "GroupTest\\": "test/GroupTest/"
+            "GroupTest\\": "tests/GroupTest/"
         }
+    },
+    "extra": {
+        "installer-name": "Group",
+        "configurable": true
     }
 }
