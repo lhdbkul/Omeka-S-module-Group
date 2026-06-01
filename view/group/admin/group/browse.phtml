@@ -91,7 +91,7 @@ $deleteRight = $this->userIsAllowed(\Group\Api\Adapter\GroupAdapter::class, 'del
         <tr>
             <th class="column-group">
                 <?php if ($deleteRight): ?>
-                <input type="checkbox" class="select-all">
+                <input type="checkbox" class="select-all" aria-label="<?= $translate('Select all') ?>">
                 <?php endif; ?>
                 <?= $translate('Group') ?>
             </th>
@@ -111,7 +111,7 @@ $deleteRight = $this->userIsAllowed(\Group\Api\Adapter\GroupAdapter::class, 'del
         <tr>
             <td>
                 <?php if ($deleteRight): ?>
-                    <input type="checkbox" name="resource_ids[]" value="<?= $group->id() ?>">
+                    <input type="checkbox" name="resource_ids[]" value="<?= $group->id() ?>" aria-label="<?= $translate('Select group') ?>">
                 <?php endif; ?>
                 <span class="group-name"<?php
                     if ($updateRight) echo ' contenteditable="true" data-update-url="' . $group->url('update') . '"';
