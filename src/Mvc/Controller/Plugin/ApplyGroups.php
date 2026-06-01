@@ -178,7 +178,7 @@ class ApplyGroups extends AbstractPlugin
      * @param array $itemSetGroups
      * @return array Associative array of groups with id as key.
      */
-    protected function getItemGroupsFromItemSets(Item $item, ItemSet $itemSet = null, array $itemSetGroups = null): array
+    protected function getItemGroupsFromItemSets(Item $item, ?ItemSet $itemSet = null, ?array $itemSetGroups = null): array
     {
         $itemSets = $this->listWithIdAsKey($item->getItemSets());
         if ($itemSet) {
@@ -215,9 +215,9 @@ class ApplyGroups extends AbstractPlugin
      */
     protected function applyGroupsToItemAndMedia(
         Item $item,
-        array $groups = null,
+        ?array $groups = null,
         $aboveGroups = false,
-        ItemSet $itemSet = null,
+        ?ItemSet $itemSet = null,
         $collectionAction = 'replace'
     ): void {
         if ($aboveGroups) {

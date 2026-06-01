@@ -984,7 +984,7 @@ class Module extends AbstractModule
      */
     protected function displayViewAdmin(
         Event $event,
-        AbstractEntityRepresentation $resource = null,
+        ?AbstractEntityRepresentation $resource = null,
         $listAsDiv = false
     ): void {
         // TODO Add an acl check for right to view groups (controller level).
@@ -1147,7 +1147,7 @@ class Module extends AbstractModule
      * @param string $contentType "json" (default), "representation" or "reference".
      * @return \Group\Entity\Group[]
      */
-    protected function listGroups(AbstractEntityRepresentation $resource = null, $contentType = null): array
+    protected function listGroups(?AbstractEntityRepresentation $resource = null, $contentType = null): array
     {
         if (is_null($resource) || empty($resource->id())) {
             return [];
