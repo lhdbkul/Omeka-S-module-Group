@@ -99,19 +99,30 @@ class GroupRepresentation extends AbstractEntityRepresentation
     /**
      * Get this group's specific resource count.
      *
-     * @param string $resourceType
+     * The count is done through the resource adapters so the visibility rights
+     * (private/public) of the current user are taken into account. Searching
+     * the group adapter itself cannot work, because the core groups results by
+     * the root id, so a single group always returns a total of one.
+     *
+     * @param string $resourceType One of "resources" (default), "item_sets",
+     * "items", "media" or "users".
      * @return int
      */
     public function count($resourceType = 'resources'): int
     {
         if (!isset($this->cacheCounts[$resourceType])) {
-            $response = $this->getServiceLocator()->get('Omeka\ApiManager')
-                ->search('groups', [
-                    'id' => $this->id(),
-                    'resource_type' => $resourceType,
-                    'limit' => 0,
-                ]);
-            $this->cacheCounts[$resourceType] = $response->getTotalResults();
+            if ($resourceType === 'resources') {
+                $this->cacheCounts[$resourceType] = $this->count('item_sets')
+                    + $this->count('items')
+                    + $this->count('media');
+            } else {
+                $response = $this->getServiceLocator()->get('Omeka\ApiManager')
+                    ->search($resourceType, [
+                        'group' => [$this->id()],
+                        'limit' => 0,
+                    ]);
+                $this->cacheCounts[$resourceType] = $response->getTotalResults();
+            }
         }
         return $this->cacheCounts[$resourceType];
     }
